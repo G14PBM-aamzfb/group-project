@@ -43,3 +43,4 @@ First outline:
 * conclusion
   * progress since 2004?
   * criticism and alternative?
+  * figure out why simulation results differ
