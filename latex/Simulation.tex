@@ -4,8 +4,19 @@
 \section{Simulation}
 Computer simulation of continuous mathematical equations need to account for the fact that computers can only represent quanitities with finite accuracy. This is achieved by discretizing time and space into a grid, and applying adequate methods to step between the points in the grid by using current values to estimate values at the next position.
 
-\subsection{Finite Difference}
+\subsection{Discretization Schemes}
 
+As outlined earlier, we used a Runge-Kutta scheme for temporal discretization and Finite Difference schemes for spatial discretization.
+
+\subsubsection*{Runge Kutta}
+
+The Runge-Kutta methods build upon the idea of Euler's method to numerically approximate solutions for initial value problems. They are formulated as
+
+$$Runge Kutta Here$$
+
+In our simulation we used the second order Runge-Kutta method, RK2, to integrate over the value of time derivatives that we determined using the finite difference method.
+
+\subsubsection*{Finite Difference}
 The finite difference methods for stepping through space are based on the Taylor series expansion of the function:
 
 $$f(x+h) = \sum_{n=0}^\infty \frac{h^n}{n!}f^{(n)}(x)$$
@@ -18,17 +29,16 @@ Which suggests a discrete-time approximation for the derivative of $f(x)$:
 
 $$f'(x)=\frac{f(x+h)-f(x)}{h}+O(h)$$
 
-Which is known as the forward-difference. Other variants are central- (a) and backward-difference (b):
+Where the term $\Delta_h[f](x)=f(x+h)-f(x)$ is known as the forward-difference. Other variants are central- (a) and backward-difference (b): Other variants are central- (a) and backward-difference (b):
 
-$$f'(x)=\frac{f(x+h)-f(x-h)}{2h}+O(h^2)$$
+$$\delta_h[f](x)=f(x+\frac{1}{2}h)-f(x-\frac{1}{2}h)$$
 
-$$f'(x) = \frac{f(x)-f(x-h)}{h}+O(h)$$
+$$\nabla_h[f](x) = f(x)-f(x-h)$$
 
 Applying these approximations recursively yields analogous approximations for higher-order derivatives, e.g. the second order derivative using central-difference:
 
 $$f''(x)=\frac{f(x+h)-2f(x)+f(x-h)}{h^2}+O(h^2)$$
 
-\pagebreak
 
 \subsection{Numerical stability}
 
@@ -36,16 +46,29 @@ A key property of numerical methods is that with decreasing tim-step size they m
 
 $$\epsilon_N=max_{1\le n\le N}||x_n-x(t_n)||\to0\ \ as\ \ dt\to 0$$
 
-Since the exact values are usually not available - the whole reason for the approximation - we substitute the requirement for convergence with 2 equivalent requirements - consistency and stability. The equivalence has been proven in [Convergence].
+Since the exact values are usually not available - the whole reason for the approximation - we substitute the requirement for convergence with 2 equivalent requirements - consistency and stability. Their equivalence has been proven for finite difference schemes in [Lax 1956] and is thus applicable to our simulation.
 
-Consistency requires that the error introduced at a single timestep - i.e. the truncation error $O(\cdot)$ in the derivation from the Taylor series expansion above - tends to 0 as dt goes to 0.
+Consistency requires that the error $e_n$ introduced at a single time step of the numerical method $\Phi$ tends to 0 as $dt$ goes to 0:
 
+$$e_n = x(t_n+dt) - \Phi(x(t_n),t_n,dt),\ \ \sum_{n=1}^N|e_n|\to 0\ \mathrm{as}\ dt\to 0$$
+
+ Since the truncation error $O(\cdot)$ in our simulation is a polynomial in $dt$ this criteria holds.
+
+ 
  Stability is the requirement that the error due to approximation does not increase faster than linearly with time. 
 
-To determine the stability of a finite difference scheme we can employ the von Neumann stability analysis. 
+To determine the stability of a finite difference scheme we can employ the von Neumann stability analysis. The method makes use of a representation of the solution of the PDE as a Fourier series expansion $u_j^k=r^ke^{ij\beta \Delta x}$, where both pairs, the time index $k$ in the LHS and the exponent $k$ of the amplification factor $r$, as well as the spatial index $j$ on both sides of the equation, have the same values, respectively. Substituting the RHS into a finite difference scheme yields, for a 1D linear diffusion equation with central difference:
 
-$$VON\ \ \ NEUMANN$$
+$$\frac{u_j^{k+1}-u_j^k}{\Delta t} = D\frac{r^ke^{i(j+1)\beta \Delta x}-2r^ke^{ij\beta \Delta x}+r^ke^{i(j-1)\beta \Delta x}}{\Delta x^2}$$
 
+\medskip
+which can be simplified to
+\smallskip
+
+$$r=1+\frac{D \Delta t}{\Delta x^2}(e^{i\beta \Delta x}+e^{-i\beta \Delta x}-2)\ \to\ r=1-4\frac{D \Delta t}{\Delta x^2} \mathrm{sin}^2(\beta\Delta x/2)$$
+\smallskip
+
+yielding $\Delta t < \frac{\Delta x^2}{2D}$ as the condition for stability. Our attempts to apply this analysis to our system of equations failed a) because of the nonlinearities and b) it being a system rather than a simple PDE (i.e. V occurs in the equation for $U_t$).
 
 \subsection{Implementation}
 
@@ -53,13 +76,15 @@ In the paper Garfinkel, et al. inform us that they used a finite difference meth
 
 Utilizing the matrix operations in Numpy we were able to formulate the different schemes as arithmetic operations between the shifted spatial grid.
 
-Despite best efforts, we were not able to simulate the PDE Garfinkel et al. used for the cell density
+$$MATRIX FORMULATION?$$
+
+We were able to retrace the simulations and results presented in the article, using an explicit forward time, central difference scheme (FTCS). In the supplements to the article Garfinkel et al. described for the cell density as
 
 $$\frac{\partial N}{\partial t}=\nabla^2N-\frac{\chi_0}{1+U^2}\nabla U \nabla N- \nabla(\frac{\chi_0}{1+U^2}\nabla U)N$$
 
-Following the advice of our advisor, Dr. Reuben O'dea, we tried to mitigate the appearing numerical instability using an upwind scheme, but were not able to prevent blow-up in the simulation.
+Despite best efforts, we were not able to simulate the nonlinear PDE. Following the advice of our advisor, Dr. Reuben O'dea, we tried to mitigate the appearing numerical instability using an upwind scheme, but were not able to prevent blow-up in the simulation.
 
-The idea behind the upwind scheme is to deal with the advection term in the PDE by compensating for the acceleration of the characteristics between $u^n$ and $u^{n+1}$ in order to assure that the domain of numerical dependence contains the domain of analytical dependence.
+The idea behind the upwind scheme is to deal with the advection term in the PDE by compensating for the acceleration caused by advection in the characteristics between $u^n$ and $u^{n+1}$ in order to assure that the domain of numerical dependence contains the domain of analytical dependence.
 $$GRAPHIC\ for\ METHOD\ OF\ LINES$$
 
 \pagebreak

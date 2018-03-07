@@ -2,8 +2,10 @@
 
 \begin{document}
 	\section{Model}
+	
+	
 
-\subsection{Parameter selection}
+\subsection{Model and Parameter selection}
 
 In order to proceed this reaction-diffusion system for VMC pattern formation process, Alan Garfinkel and his partners made the following choices. The first choice is that they treated this model as 2D spatial domain in 100*100 uniform mesh. Meanwhile the activator and inhibitor are BMP-2 and MGP corresponding to U(x,y) and V(x,y) (effective concentrations). The method to calculate the final concentrations for BMP-2 and MGP is the use of second order Runge-Kutta method. Moreover the chemical kinetics they chose were the interactions of BMP-2 with MGP. Additionally, in order to govern the model equations, the initial condition is described as following “The initial condition of U and V that are uniformly distributed with a 2\% random perturbations” as well as neumann conditions (no-flux at boundary) for their boundary conditions. The whole equations are the following:
 
@@ -21,4 +23,25 @@ In the previous experiment which was done by Ghosh-Choudhury et al, it shows tha
 Garfinkel et al estimated the degradation rate of BMP-2 directly and conservatively from the calculation of Entchev et al’s work. Hence they took c = 0.01. MGP has more rapidly degradation than BMP-2 based on their unpublished work. The ratio for  is approximately . Thus they took e = 0.02.
 
 The source term S is to be added in order to make tripling pattern formation which means the source term needs to be three times the initial concentration of MGP. In the model, Garfinkel et al chose the initial value of MGP scaled as 2. Then for the 1000 time steps, the S needs to be 0.06 per time steps, totally 6 which will make tripling pattern formation.
+
+\subsection{Non-dimensionalization and Steady States}
+
+Using the scaling factors $u=\sqrt{k}U$, $v=c\sqrt{k}V$ as well as $\tau = \gamma c t$ and $\vec{\xi}=\sqrt{\gamma c} \vec{x}$ we were able to non-dimensionalize the system as
+$$\frac{\partial u}{\partial \tau} = D\nabla^2 u + \frac{u^2}{(1+u^2)v}-u,\ \ \ \frac{\partial v}{\partial \tau} = \nabla^2 v + G u^2 - E v + Z$$
+where $G=\frac{1}{\sqrt{k}}$, $E=\frac{e}{c}$ and $Z=\sqrt{k}S$.
+
+
+The steady state at $(\bar u_0,\bar v_0)=(0,S/E)$ is apparent and quickly confirmed to stable. We found another stable steady state numerically, which suggests the existence of a third, unstable steady state.
+This notion is corroborated in Garfinkel 2008 which additionally provides analytical forms of the non-trivial steady states. We were able to proof the equivalence of the two systems of equations and the analyses from the later paper can thus be applied to  our model. The stable (+) and unstable (-) steady states (for $G=1$, $k=1$, $E=2$) are
+
+$$(u_\pm,v_\pm)=\Bigg(\frac{\sqrt{\theta}\pm\sqrt{\eta}}{2}, \frac{\theta\pm\sqrt{\theta\eta}}{2-(Z-1)\sqrt{\theta}\pm\theta\sqrt{\eta}}\Bigg)$$
+
+where $\eta = \frac{4}{\sqrt{\theta}+\phi}$, $\theta=\frac{\beta/\rho-\rho-2(Z+1)}{3}$, $\phi = -\theta-2(Z+1)$, $\rho = \sqrt[3]{\alpha/2+\sqrt{\alpha^2/4-\beta^3}}$, $\beta = 1+14Z+Z^2$, $\alpha = 108-72Z(Z+1)+2(Z+1)^3$
+
+\subsection{Stability and Bifurcations}
+
+More interesting than the precise values of the steady states are their stability and how they change with parameter Z. In the last section we noted the existence of two stable and one unstable steady state - a bistable system. This is true for a limited range of Z only, as Garfinkel et al. note.
+
+
+
 \end{document}
