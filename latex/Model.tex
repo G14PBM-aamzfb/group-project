@@ -1,0 +1,24 @@
+\documentclass{article}
+
+\begin{document}
+	\section{Model}
+
+\subsection{Parameter selection}
+
+In order to proceed this reaction-diffusion system for VMC pattern formation process, Alan Garfinkel and his partners made the following choices. The first choice is that they treated this model as 2D spatial domain in 100*100 uniform mesh. Meanwhile the activator and inhibitor are BMP-2 and MGP corresponding to U(x,y) and V(x,y) (effective concentrations). The method to calculate the final concentrations for BMP-2 and MGP is the use of second order Runge-Kutta method. Moreover the chemical kinetics they chose were the interactions of BMP-2 with MGP. Additionally, in order to govern the model equations, the initial condition is described as following “The initial condition of U and V that are uniformly distributed with a 2\% random perturbations” as well as neumann conditions (no-flux at boundary) for their boundary conditions. The whole equations are the following:
+
+In these above equations, D is the ratio of diffusion coefficient of BMP-2 and MGP which is $D_u / D_v$ (BMP-2 and MGP respectively). $\gamma$ is the scaling parameter which is equal to $\frac{L^2}{D_v T_C}$, where $L$ is the length of the domain which is the actual size in their experiments, $T_C$ is the time for BMP-2 synthesis. $k$ is the saturating value. $c$ and $e$ are the first order degradation rates for BMP-2 and MGP. $S$ is source term.
+
+More precisely, in equation 1, BMP-2 will activate its own production autocatalytically which will saturate. Hence Garfinkel et al chose $\frac{U^2}{1+k U^2}$, a sigmoidal form, to govern this autocatalysis. V is treated as the inhibitor in the denominator. There is a degradation for U at rate c. In equation 2, $U^2$ is used to represent that BMP-2 spurs MGP in non-linear manner. There is a degradation for V at rate e. S represents the exogenous MGP which is added by purpose.
+
+In order to run the equations smoothly, the parameters were chosen carefully. Firstly, Garfinkel et al took the initial value of $Du$, $1 \times 10^{-8} cm^2/sec$, directly from Entchev et al’s work which was calculated by using GFP labeling and imaging. Then they considered the diffusion of large amount of molecules in nonlinear slowing manner. Due to acid PH, dimerization of BMP-2 and actual tissue culture, the estimated value reduced to $0.15 \times 10^{-8} cm^2/sec$. Because there is no directly calculated value for diffusivity of MGP, they estimated an theoretical approximate value, $30 \times 10^{-8} cm^2/sec$, which was based on empirical formulas. Meanwhile, this approximate value is similar to the diffusion coefficient of amyloid B which is $50 \times 10^{-8} cm^2/sec$. Finally, the value of D was calculated by $\frac{D_u}{D_v} = \frac{1}{200}$.
+
+In the previous experiment which was done by Ghosh-Choudhury et al, it shows that BMP-2 autoregulates in a saturating manner. However, due to unknown level of MGP, it is difficult to establish the precise value of k. In Garfinkel et al’s model, they chose k=0.65.
+In order to calculate , it is essential that production rates are known. In previous work, they have found the upper limit for the production rate which is in embryonic kidney cells with a cytomegalovirus (CMV) promoter. They also established the rates for BMP-2 production in calcifying vascular cells and in endothelial cells which were both . Furthermore, FLAG-tagged MGP and newly developed ELISA suggested that the production rates of BMP-2 and MGP are similar. These reports can inform that the upper limit for the production rates is  and the lower limit is .
+
+ As mentioned above,  is equal to . In the actual cell culture, the is 4cm,  they chose is 1 ng/hr (). Hence the 
+
+Garfinkel et al estimated the degradation rate of BMP-2 directly and conservatively from the calculation of Entchev et al’s work. Hence they took c = 0.01. MGP has more rapidly degradation than BMP-2 based on their unpublished work. The ratio for  is approximately . Thus they took e = 0.02.
+
+The source term S is to be added in order to make tripling pattern formation which means the source term needs to be three times the initial concentration of MGP. In the model, Garfinkel et al chose the initial value of MGP scaled as 2. Then for the 1000 time steps, the S needs to be 0.06 per time steps, totally 6 which will make tripling pattern formation.
+\end{document}
