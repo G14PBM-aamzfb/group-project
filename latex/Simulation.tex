@@ -10,11 +10,18 @@ As outlined earlier, we used a Runge-Kutta scheme for temporal discretization an
 
 \subsubsection*{Runge Kutta}
 
-The Runge-Kutta methods build upon the idea of Euler's method to numerically approximate solutions for initial value problems. They are formulated as
+The Runge-Kutta methods improve upon the idea of Euler's method to numerically approximate solutions for initial value problems by estimating intermediate rates of change within a time step. For an ODE $y' = f(y,x,t)$ hey are formulated as
 
-$$Runge Kutta Here$$
+$$y_{n+1} = y_n + h \sum_{j=1}^s b_j k_j$$
 
-In our simulation we used the second order Runge-Kutta method, RK2, to integrate over the value of time derivatives that we determined using the finite difference method.
+where $y_n, y_{n+1}$ are the current and next value in the solution, h is the time step,  $k_j$ and $b_j$ are the intermediate rates of change and their coefficients according to the specific order of the scheme. The intermediate rates are
+
+$$k_j = f\left(t_n + h c_j, y_n + h \sum_{l=1}^{j-1} a_{jl} k_l \right),\,j=1,...,s$$
+
+In our simulation we used the second order Runge-Kutta method, RK2, to integrate over the value of time derivatives that we determined using the finite difference method. Its intermediates steps are
+
+$$k_1 = f(t_n, y_n )$$
+$$k_2 = f \left( t_n+\frac{h}{2}, y_n+\frac{h}{2}k_1 \right)$$
 
 \subsubsection*{Finite Difference}
 The finite difference methods for stepping through space are based on the Taylor series expansion of the function:
@@ -74,28 +81,31 @@ yielding $\Delta t < \frac{\Delta x^2}{2D}$ as the condition for stability. Our 
 
 In the paper Garfinkel, et al. inform us that they used a finite difference method with second order Runge Kutta. To allow for comparison between their results and ours, we implemented our simulations in Python using the aforementioned methods.
 
-Utilizing the matrix operations in Numpy we were able to formulate the different schemes as arithmetic operations between the shifted spatial grid.
+Utilizing the efficient matrix operations in Numpy we were formulated the different schemes as arithmetic operations on the shifted spatial grid, e.g. $u_{j-1}-2u_j+u_{j+1}$ becomes \texttt{U[:,0:-2]-2*U[:,1:-1]+U[:,2:0]}. We were able to retrace the simulations and results presented in the article, using an explicit forward time, central difference scheme (FTCS).
 
-$$MATRIX FORMULATION?$$
+\subsection{Encountered issues}
 
-We were able to retrace the simulations and results presented in the article, using an explicit forward time, central difference scheme (FTCS). In the supplements to the article Garfinkel et al. described for the cell density as
+In the supplements to the article Garfinkel et al. described for the cell density as
 
 $$\frac{\partial N}{\partial t}=\nabla^2N-\frac{\chi_0}{1+U^2}\nabla U \nabla N- \nabla(\frac{\chi_0}{1+U^2}\nabla U)N$$
 
-Despite best efforts, we were not able to simulate the nonlinear PDE. Following the advice of our advisor, Dr. Reuben O'dea, we tried to mitigate the appearing numerical instability using an upwind scheme, but were not able to prevent blow-up in the simulation.
+Despite best efforts, we did not succeed in simulating the nonlinear PDE. Following the suggestion of our advisor, Dr. Reuben O'dea, we tried to mitigate the appearing numerical instability using an upwind scheme, but were not able to prevent blow-up in the simulation.
+
+[REMOVE]
 
 The idea behind the upwind scheme is to deal with the advection term in the PDE by compensating for the acceleration caused by advection in the characteristics between $u^n$ and $u^{n+1}$ in order to assure that the domain of numerical dependence contains the domain of analytical dependence.
-$$GRAPHIC\ for\ METHOD\ OF\ LINES$$
+
+[REMOVE]
 
 \pagebreak
 
 \section{Results}
 
-We decided to first check some assertions made in the original paper. The authors suggest that the appearance of Turing patterns is critically dependent on the ratio of the morphogens' diffusion constants, $D_u$ having to be smaller than $D_v$. Varying the value of $D_v$ while keeping $D_u$ fixed at 0.01 we observed the disappearance of Turing patterns as $D_v$ approaches and passes that of $D_u$ (Fig. 1).
+We decided to first check the central assertions made in the original paper. The authors suggest that the appearance of Turing patterns is critically dependent on the ratio of the morphogens' diffusion constants, $D_u$ having to be smaller than $D_v$. Varying the value of $D_v$ while keeping $D_u$ fixed at 0.01 we observed the disappearance of Turing patterns as $D_v$ approaches and passes that of $D_u$ (Fig. 1).
 
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{diffusivity.png}
-  \caption{Figure 1: Varying Diffusivity}
+  \caption{Varying Diffusivity}
   \label{fig:dv}
 \end{figure}
 
@@ -114,5 +124,7 @@ Most importantly, Garfinkel et al. describe a qualitative variation in the appea
   \caption{Figure 1: Varying external inhibition}
   \label{fig:s}
 \end{figure}
+
+
 
 \end{document}
