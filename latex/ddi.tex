@@ -1,0 +1,103 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1.2in]{geometry}
+\usepackage{amsmath}
+\begin{document}
+\section{Validity of the model}
+In this model, patterns are sensitive to the changes of parameters such as $\gamma$ and $S$. However, patterns are not sensitive to other parameters such the diffusion coefficients. For example, if we need the patterns to be model-doubling, we only need to change the magnitude of $\gamma$ (i.e. double it). If we want the patterns from stripes to spots, we can increase the source term $S$ (i.e. add exogenous MGP). As long as the ratio of the diffusion coefficients remains small (i.e. less than 1), whatever magnitude you choose, the pattern formation will remain at powerful manner. 
+
+The reaction-diffusion systems have common properties, rapid diffusion of inhibitor and nonlinear inhibitor and activator autocatalysis. The reasons why Garfinkel et al chose these particular reaction-diffusion equations are the followings. The known physiological variables are well defined in the equations in terms of structure as well as the relationships in their experiments. Meanwhile, they referred other researchers’ excellent study by Kondo and Asai, which have two-variable reaction-diffusion model with activator and inhibitor. There are other reaction-diffusion models can be established in order to model cells self-organization. According to Garfinkel et al, the patterns produced in their experimental preparations are highly similar with the patterns produced by an entire family of reaction-diffusion models. 
+The advantage of their model is more typical of the adult tissue. They only have a single cell type (vascular mesenchymal cell) and two morphogens (BMP-2 and MGP). 
+
+However, there are more than one cell type in other researchers’ experiments. Because they use two-variable model ($U$ and $V$), they do not need any cell behaviour assumptions to predict the spatial patterns which will be correctly. There is one thing which needs to be remarked in their model is that the patterns in the experiments are the patterns of cells. However, the patterns in the model are the patterns of the morphogen. 
+
+In order to extend the model, they studied three-variable reaction-diffusion model invoking the researches by Keller and Segel, and the model of Painter, Maini and Othmer. The third variable they used is the cell density, $n$. The equation for $n$ was invoked from Painter, Maini and Othmer. In Painter, Maini and Othmer‘s work, they combined a tendency to diffuse with a tendency to follow the activator chemical $U$. The full model is the following.
+
+
+\begin{equation*}
+\frac{\partial u}{\partial t}=\nabla \bullet (D\nabla u) + f(u,v)   
+\end{equation*}
+
+\begin{equation*}
+\frac{\partial v}{\partial t}=\nabla \bullet (\nabla v) + g(u,v)  
+\end{equation*}
+
+\begin{equation*}
+\frac{\partial n}{\partial t}=\nabla \bullet (\nabla n-\frac{x_0}{(1+u^2)}n \nabla u)
+\end{equation*}
+
+where $ f(u,v)=\gamma (\frac{u^2}{(1+ku^2)v}-cu)$ and $g(u,v)=\gamma (u^2-cv+s)$.\\
+
+
+The similar predictions were produced comparing with simplified two-variable model.
+To understand the relationship between $u$ and $n$, it is easy to consider one spatial domain for the third differential equation which has the form $\dfrac{\partial n}{\partial t}=\nabla J$ , where $J$ is the flux and is the everything inside the brackets. In the steady state, the left hand side is 0 which leaves right hand side, the gradient $J$, equals to 0. Hence,
+
+\begin{equation*}
+0=\nabla n -\frac{x_0}{(1+u^2)}n\nabla u \Rightarrow 0=\frac{\partial n}{\partial x} - \frac{x_0}{1+u^2}n\frac{\partial u}{\partial x}
+\end{equation*}
+
+Then we can integrate it directly to get $n=e^{x_0 + arctan(u)} $. Since $arctan(x)$ is a monotonically increasing function, so is $n$. From above, the distribution of $n$ is parallel to the distribution of $u$ at steady state which means the distribution of cells will pursue the distribution of activator.
+
+\section{Additional Model Predictions}
+Ghosh-Choudhury et al did a experiment which supports Garfinkel et al‘s prediction “the autocatalysis of U will saturate”. In this experiment, Ghosh-Choudhury et al  use “luciferase activity” to measure the transcriptional activity of the BMP-2 promoter. Gierer and Meinhardt used other model which predicted that $U$ would increase autocatalically without bound. In their model, $f(U,V)=-bU+\frac{U^2}{V}$.
+
+In Garfinkel et al‘s model, the degradation of inhibitor is greater than the degradation of activator. They made this prediction because based on Koch and Meinhardt’s observation, the patterns in Gierer and Meinhardt‘s model will be formed only if the inhibitor degrades more rapidly than the activator which will be supported by experiment finding. In Koch and Meinhardt‘s work, they made a criterion which indicates that the ratio of inhibitor degradation rate to activator degradation rate should be $>(2/a_0-1)$, where $a_0$ is the equilibrium value of the activator. In Garfinkel et al‘s model, the ratio is 2 and $a_0$ is $1.1$. Hence $2>0.8$ which satisfies the criterion.
+
+The final prediction in the model is about Turing space. Based on the work of Murray, it shows that the stable pattern formation is supported by saturation of model. When the stable patterns are formed, the model parameters fall into a pattern formation region in Turing space which satisfy the following conditions at steady states:
+
+\begin{equation}
+	f_u + g_v < 0
+	\label{eq:3}
+\end{equation}
+
+\begin{equation}
+f_{u}g_{v}-f_{v}g_{u} > 0 
+	\label{eq:4}
+\end{equation}
+
+\begin{equation}
+	D_{2}f_{u} + D_{1}g_{v} > 0
+		\label{eq:5}
+\end{equation}
+
+\begin{equation}
+	4D_{1}D_{2}(f_{u}g_{v}-f_{v}g_{u})<(D_{1}g_{v}+D_{2}f_{u})^2
+		\label{eq:6}
+\end{equation}
+
+In Garfinkel et al's model, the equations are 
+
+\begin{equation*}
+	\frac{\partial U}{\partial t}=D(\nabla^{2}U)+\gamma[\frac{U^2}{(1+kU^2)V}-cU]
+\end{equation*}
+
+\begin{equation*}
+	\frac{\partial V}{\partial t}=\nabla^{2}V+\gamma(U^2-eV+S)
+\end{equation*}
+
+Hence, the Jacobian is therefore 
+
+\begin{equation*}
+	J_{(U,V)}=\gamma \begin{bmatrix}
+	\frac{2U}{V(1+kU^2)^2}-c & -\frac{U^2}{(1+kU^2)V^2}\\
+	2U & -e
+	\end{bmatrix}
+	= \gamma \begin{bmatrix}
+	f_u & f_v\\ 
+	g_u & g_v
+	\end{bmatrix}
+\end{equation*}
+
+The fixed point for $(\overline{U},\overline{V})$  is $(1.11031,61.63890)$.Substitute $(\overline{U},\overline{V})$ into the Jacobian. We can get
+
+\begin{equation*}
+J_{(U,V)}= \begin{bmatrix}
+16.5454	 & -2.70917\\
+33309.3 & -3000
+\end{bmatrix}
+\end{equation*}
+
+Condition (\ref{eq:3}) holds since $16.5454-3000<0$.
+Condition (\ref{eq:4}) holds as well since $-16.5454\times3000+2.70917\times33309.3=40604.35628>0$.
+In condition (\ref{eq:5}), $D_2$ is $200$ and $D_1$ is $1$. So, we have $200 \times 16.5454-3000>0$. 
+Therefore, condition (\ref{eq:5}) holds.
+\end{document}
